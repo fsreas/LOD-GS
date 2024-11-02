@@ -271,6 +271,7 @@ def read_extrinsics_text(path):
                     id=image_id, qvec=qvec, tvec=tvec,
                     camera_id=camera_id, name=image_name,
                     xys=xys, point3D_ids=point3D_ids)
+
     return images
 
 

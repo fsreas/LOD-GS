@@ -221,9 +221,8 @@ def readColmapSceneInfo(path, images, depths, eval, llffhold=8):
     else:
         print("[ Dataloader ] Found .ply point cloud, skipping conversion.")
         pcd = fetchPly(ply_path)
-    
-    pcds = [pcd]
-    scene_info = SceneInfo(point_cloud=pcds,
+    # pcds = [pcd]
+    scene_info = SceneInfo(point_cloud=pcd,
                            train_cameras=train_cam_infos,
                            test_cameras=test_cam_infos,
                            nerf_normalization=nerf_normalization,
@@ -434,7 +433,7 @@ def readoctreeColmapInfo(path, images, depths, eval, llffhold=8):
     ply_path = os.path.join(path, "sparse/0/points3D.ply")
     bin_path = os.path.join(path, "sparse/0/points3D.bin")
     txt_path = os.path.join(path, "sparse/0/points3D.txt")
-
+ 
     pcd = None
     if not os.path.exists(las_path):
         print("[ Dataloader ] Converting point3d.bin to LOD PCS, will happen only the first time you open the scene.")
@@ -455,15 +454,15 @@ def readoctreeColmapInfo(path, images, depths, eval, llffhold=8):
 
         # Convert to octree
         print("[ Dataloader ] Converting LAS to octree for level-of-detail pointclouds.")
-        command = [os.path.join(os.getcwd(), "PotreeConverter/bin/Release/Converter.exe"), las_path, "-o", octree_path, "--overwrite"]
-        subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        command = [os.path.join(os.getcwd(), "PotreeConverter/bin/Converter"), las_path, "-o", octree_path, "--overwrite"]
+        subprocess.run(command, shell=False, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print("[ Dataloader ] LOD pointclouds generated.")
     else:
         if not os.path.exists(os.path.join(octree_path, "metadata.json")):
             # Convert to octree
             print("[ Dataloader ] Converting LAS to octree for level-of-detail pointclouds.")
-            command = [os.path.join(os.getcwd(), "PotreeConverter/bin/Release/Converter.exe"), las_path, "-o", octree_path, "--overwrite"]
-            subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            command = [os.path.join(os.getcwd(), "PotreeConverter/bin/Converter"), las_path, "-o", octree_path, "--overwrite"]
+            subprocess.run(command, shell=False, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print("[ Dataloader ] LOD pointclouds generated.")
         else:
             print("[ Dataloader ] Found octree, skipping conversion.")

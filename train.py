@@ -28,6 +28,9 @@ try:
 except ImportError:
     TENSORBOARD_FOUND = False
 
+from datetime import datetime
+timestamp = datetime.now()
+
 def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint, debug_from):
     first_iter = 0
 
@@ -37,7 +40,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             unique_str=os.getenv('OAR_JOB_ID')
         else:
             unique_str = str(uuid.uuid4())
-        dataset.model_path = os.path.join(dataset.source_path, "3D-Gaussian-Splatting", unique_str[0:10])
+        # dataset.model_path = os.path.join(dataset.source_path, "3D-Gaussian-Splatting", unique_str[0:10])
+        dataset.model_path = os.path.join("output/3D-Gaussian-Splatting", str(timestamp))
     print("[ Training ] Output Folder: {}".format(dataset.model_path))
     os.makedirs(dataset.model_path, exist_ok = True)
 
